@@ -40,7 +40,7 @@ public class AddNewWorkoutModalTest extends BaseTest {
 
         loginPage.openPage()
                 .isPageOpened()
-                .login("tahayuldasheva@gmail.com", "Q12345q")
+                .login(user, password)
                 .assertNoErrorMessageVisible();
         addWorkoutPage.openPage()
                 .isPageOpened()
@@ -82,7 +82,7 @@ public class AddNewWorkoutModalTest extends BaseTest {
     public void checkAddedWorkoutInCalendar() {
         loginPage.openPage()
                 .isPageOpened()
-                .login("tahayuldasheva@gmail.com", "Q12345q")
+                .login(user, password)
                 .assertNoErrorMessageVisible();
         trainingCalendarPage.openPage()
                 .isPageOpened()

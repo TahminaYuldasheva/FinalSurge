@@ -15,7 +15,7 @@ public class AddWorkoutTest extends BaseTest {
     public void checkAddWorkout() {
         loginPage.openPage()
                 .isPageOpened()
-                .login("tahayuldasheva@gmail.com", "Q12345q")
+                .login(user, password)
                 .assertNoErrorMessageVisible();
         addWorkoutPage.openPage()
                 .isPageOpened()

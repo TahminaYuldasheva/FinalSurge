@@ -15,7 +15,7 @@ public class LoginTest extends BaseTest {
     public void checkLoginWithPositiveCred() {
         loginPage.openPage()
                 .isPageOpened()
-                .login("tahayuldasheva@gmail.com", "Q12345q")
+                .login(user, password)
                 .assertNoErrorMessageVisible();
         assertEquals($(UserProfilePage.USER_PROFILE_LOCATOR).getText(), "Settings",
                 "User page did not open!");
@@ -27,7 +27,7 @@ public class LoginTest extends BaseTest {
     public void checkLoginWithEmptyPassword() {
         loginPage.openPage()
                 .isPageOpened()
-                .login("tahayuldasheva@gmail.com", " ");
+                .login(user, " ");
         assertEquals($(LoginPage.ERROR_MESSAGE_EMPTY).getText(), "Please enter a password.",
                 "No error message appeared!");
     }
@@ -38,7 +38,7 @@ public class LoginTest extends BaseTest {
     public void checkLoginWithEmptyEmail() {
         loginPage.openPage()
                 .isPageOpened()
-                .login(" ", "Q12345q");
+                .login(" ", password);
         assertEquals($(LoginPage.ERROR_MESSAGE_EMPTY).getText(), "Please enter your e-mail address.",
                 "No error message appeared!");
     }
@@ -49,7 +49,7 @@ public class LoginTest extends BaseTest {
     public void checkLoginWithWrongPassword() {
         loginPage.openPage()
                 .isPageOpened()
-                .login("tahayuldasheva@gmail.com", "Q12345");
+                .login(user, "Q12345");
         assertEquals($(LoginPage.ERROR_MESSAGE).getText(), "Invalid login credentials. Please try again.",
                 "No error message appeared!");
     }

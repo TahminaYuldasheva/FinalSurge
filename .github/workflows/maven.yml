@@ -18,6 +18,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    env:
+      LOGIN: ${{secrets.FS_USER}}
+      PASS: ${{secrets.FS_PASSWORD}}
 
     steps:
     - uses: actions/checkout@v4
@@ -28,5 +31,5 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Running tests
-      run: mvn clean test
+      run: mvn clean test -Duser=$LOGIN -Dpassword=$PASS
 
