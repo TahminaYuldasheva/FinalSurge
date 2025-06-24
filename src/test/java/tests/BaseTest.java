@@ -13,6 +13,7 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import pages.*;
 import utils.AllureUtils;
+import utils.PropertyReader;
 
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 
@@ -26,8 +27,8 @@ public class BaseTest {
     WorkoutDetailsPage workoutDetailsPage;
     TrainingCalendarPage trainingCalendarPage;
 
-    String user = System.getProperty("user");
-    String password = System.getProperty("password");
+    String user = System.getProperty("user", PropertyReader.getProperty("user"));
+    String password = System.getProperty("password", PropertyReader.getProperty("password"));
 
     @Parameters({"browser"})
     @BeforeMethod(description = "Opening browser")
