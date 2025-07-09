@@ -26,6 +26,7 @@ public class BaseTest {
     AddWorkoutModal addWorkoutModal;
     WorkoutDetailsPage workoutDetailsPage;
     TrainingCalendarPage trainingCalendarPage;
+    UserProfilePage userProfilePage;
 
     String user = System.getProperty("user", PropertyReader.getProperty("user"));
     String password = System.getProperty("password", PropertyReader.getProperty("password"));
@@ -47,6 +48,8 @@ public class BaseTest {
         addWorkoutModal = new AddWorkoutModal();
         workoutDetailsPage = new WorkoutDetailsPage();
         trainingCalendarPage = new TrainingCalendarPage();
+        userProfilePage = new UserProfilePage();
+
 
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide());
         Configuration.reportsFolder = "target/allure-results";
@@ -54,7 +57,7 @@ public class BaseTest {
 
     @AfterMethod(alwaysRun = true)
     public void tearDown(ITestResult result) {
-        if (ITestResult.FAILURE == result.getStatus()){
+        if (ITestResult.FAILURE == result.getStatus()) {
             WebDriver driver = WebDriverRunner.getWebDriver();
             AllureUtils.takeScreenshot(driver);
         }

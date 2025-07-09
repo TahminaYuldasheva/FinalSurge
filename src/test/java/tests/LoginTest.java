@@ -1,56 +1,36 @@
 package tests;
 
-import jdk.jfr.Description;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import pages.LoginPage;
-import pages.UserProfilePage;
 
-import static com.codeborne.selenide.Selenide.$;
 import static org.testng.Assert.assertEquals;
 
 public class LoginTest extends BaseTest {
 
-    @Description("Checking login with valid data")
-    @Test(testName = "Positive login test", description = "Checking login with valid data")
-    public void checkLoginWithPositiveCred() {
-        loginPage.openPage()
-                .isPageOpened()
-                .login(user, password)
-                .assertNoErrorMessageVisible();
-        assertEquals($(UserProfilePage.USER_PROFILE_LOCATOR).getText(), "Settings",
-                "User page did not open!");
+    @DataProvider
+    public Object[][] loginData() {
+        return new Object[][]{
+                {user, password, "positive", null},
+                {user, " ", "emptyPassword", "Please enter a password."},
+                {" ", password, "emptyEmail", "Please enter your e-mail address."},
+                {user, "Q12345", "wrongPassword", "Invalid login credentials. Please try again."}
+        };
     }
 
-    @Description("Checking login with empty 'Password' field")
-    @Test(testName = "Negative login test with empty password",
-            description = "Checking login with empty Password field")
-    public void checkLoginWithEmptyPassword() {
+    @Test(dataProvider = "loginData")
+    public void checkLogin(String user, String password, String testCase, String expectedErrorMessage) {
         loginPage.openPage()
                 .isPageOpened()
-                .login(user, " ");
-        assertEquals($(LoginPage.ERROR_MESSAGE_EMPTY).getText(), "Please enter a password.",
-                "No error message appeared!");
-    }
-
-    @Description("Checking login with empty 'Email' field")
-    @Test(testName = "Negative login test with empty email",
-            description = "Checking login with empty 'Email' field")
-    public void checkLoginWithEmptyEmail() {
-        loginPage.openPage()
-                .isPageOpened()
-                .login(" ", password);
-        assertEquals($(LoginPage.ERROR_MESSAGE_EMPTY).getText(), "Please enter your e-mail address.",
-                "No error message appeared!");
-    }
-
-    @Description("Checking login with wrong password")
-    @Test(testName = "Negative login test",
-            description = "Checking login with wrong password")
-    public void checkLoginWithWrongPassword() {
-        loginPage.openPage()
-                .isPageOpened()
-                .login(user, "Q12345");
-        assertEquals($(LoginPage.ERROR_MESSAGE).getText(), "Invalid login credentials. Please try again.",
-                "No error message appeared!");
+                .login(user, password);
+        if (testCase.equals("positive")) {
+            loginPage.assertNoErrorMessageVisible();
+            assertEquals(userProfilePage.getSettingsText(), "Settings",
+                    "User page did not open!");
+        } else if (testCase.equals("wrongPassword")) {
+            assertEquals(loginPage.getErrorText(), expectedErrorMessage,
+                    "No error message appeared!");
+        } else
+            assertEquals(loginPage.getErrorEmptyText(), expectedErrorMessage,
+                    "No error message appeared!");
     }
 }

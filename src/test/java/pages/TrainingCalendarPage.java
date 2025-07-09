@@ -35,4 +35,10 @@ public class TrainingCalendarPage extends BasePage {
         $x(xpath).shouldBe(Condition.visible);
         return this;
     }
+
+
+    public String getWorkoutInCalendarText(String workoutName) {
+        String expected = "Run: " + workoutName;
+        return ($x(String.format(WORKOUT_IN_CALENDAR, expected)).getText());
+    }
 }

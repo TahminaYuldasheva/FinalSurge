@@ -9,7 +9,7 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
 @Log4j2
-public class AddWorkoutPage extends BasePage{
+public class AddWorkoutPage extends BasePage {
 
     @Step("Opening the 'Add Workout' page")
     public AddWorkoutPage openPage() {
@@ -33,7 +33,7 @@ public class AddWorkoutPage extends BasePage{
     }
 
     @Step("Selecting activity type on 'Add Workout' page")
-     public AddWorkoutPage selectActivityType(String activityType) {
+    public AddWorkoutPage selectActivityType(String activityType) {
         log.info("Selecting {} on 'Add Workout' page", "'" + activityType + "'");
         $(byText(activityType)).click();
         return this;

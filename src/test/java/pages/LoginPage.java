@@ -14,8 +14,8 @@ public class LoginPage extends BasePage {
     public static final By LOGIN_BUTTON = By.xpath("//button[text()='Login']");
     public static final By EMAIL_FIELD = By.id("login_name");
     public static final By PASSWORD_FIELD = By.id("login_password");
-    public static final By ERROR_MESSAGE_EMPTY = By.xpath("//label[@class='error']");
-    public static final By ERROR_MESSAGE = By.cssSelector("div.alert.alert-error");
+    public static final By ERROR_TEXT_EMPTY = By.xpath("//label[@class='error']");
+    public static final By ERROR_TEXT = By.cssSelector("div.alert.alert-error");
 
     @Step("Opening the login page")
     public LoginPage openPage() {
@@ -24,11 +24,19 @@ public class LoginPage extends BasePage {
         return this;
     }
 
-    @Step ("Checking that the login page is open")
+    @Step("Checking that the login page is open")
     public LoginPage isPageOpened() {
         log.info("Checking that the login page is open");
         $(LOGIN_BUTTON).shouldBe(Condition.visible);
         return this;
+    }
+
+    public String getErrorText() {
+        return $(ERROR_TEXT).getText();
+    }
+
+    public String getErrorEmptyText() {
+        return $(ERROR_TEXT_EMPTY).getText();
     }
 
     @Step("Log in with username '{user}' and password '{password}'")
@@ -43,7 +51,7 @@ public class LoginPage extends BasePage {
     @Step("Checking that no error message is visible on the page")
     public void assertNoErrorMessageVisible() {
         log.info("Checking that no error message is visible on the page");
-        ElementsCollection errors = $$(ERROR_MESSAGE);
+        ElementsCollection errors = $$(ERROR_TEXT);
         if (!errors.isEmpty()) {
             errors.get(0).shouldNotBe(Condition.visible);
         }

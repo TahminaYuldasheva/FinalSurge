@@ -4,14 +4,16 @@ import dto.Workout;
 import jdk.jfr.Description;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
-import pages.AddWorkoutModal;
-import pages.TrainingCalendarPage;
-import pages.WorkoutDetailsPage;
 
-import static com.codeborne.selenide.Selenide.$x;
 import static org.testng.Assert.assertEquals;
+import static pages.AddWorkoutModal.UPDATE_WORKOUT_TEXT;
+import static pages.WorkoutDetailsPage.WORKOUT_DETAILS_TEXT;
 
 public class AddNewWorkoutModalTest extends BaseTest {
+
+    final String expectedOverallPlace = "15";
+    final String expectedAgeGroupPlace = "3";
+
     SoftAssert softAssert = new SoftAssert();
     Workout workout;
 
@@ -50,28 +52,28 @@ public class AddNewWorkoutModalTest extends BaseTest {
                 .createWorkoutModal(workout)
                 .clickAddWorkoutButton();
         addWorkoutModal.checkNoErrorMessageVisible();
-        softAssert.assertEquals((WorkoutDetailsPage.WORKOUT_DETAILS_TEXT), "Workout Details",
+        softAssert.assertEquals((WORKOUT_DETAILS_TEXT), "Workout Details",
                 "Workout Details page did not open!");
 
         workoutDetailsPage.clickUpdateButton();
         addWorkoutModal.isUpdateWorkoutModalOpened();
-        assertEquals((AddWorkoutModal.UPDATE_WORKOUT_MESSAGE),
+        softAssert.assertEquals((UPDATE_WORKOUT_TEXT),
                 "Update Workout",
                 "Unable to click the 'Update' button");
         workout.setMarkAsRace(true);
-        workout.setOverallPlace("15");
-        workout.setAgeGroupPlace("3");
+        workout.setOverallPlace(expectedOverallPlace);
+        workout.setAgeGroupPlace(expectedAgeGroupPlace);
         addWorkoutModal.updateWorkoutRaceInfo(workout)
                 .clickUpdateButton();
 
         softAssert.assertEquals(workout.getOverallPlace(),
-                "15",
+                expectedOverallPlace,
                 "Incorrect data!");
         softAssert.assertEquals(workout.getAgeGroupPlace(),
-                "3",
+                expectedAgeGroupPlace,
                 "Incorrect data!");
         softAssert.assertAll();
-        softAssert.assertEquals((WorkoutDetailsPage.WORKOUT_DETAILS_TEXT), "Workout Details",
+        softAssert.assertEquals((WORKOUT_DETAILS_TEXT), "Workout Details",
                 "Workout Details page did not open!");
     }
 
@@ -88,7 +90,7 @@ public class AddNewWorkoutModalTest extends BaseTest {
                 .isPageOpened()
                 .checkWorkoutIsDisplayedInCalendar(workout.getWorkoutName());
         String expected = "Run: " + workout.getWorkoutName();
-        assertEquals($x(String.format(TrainingCalendarPage.WORKOUT_IN_CALENDAR, expected)).getText(), expected,
+        assertEquals(trainingCalendarPage.getWorkoutInCalendarText(workout.getWorkoutName()), expected,
                 "Training not found in the calendar!");
     }
 }

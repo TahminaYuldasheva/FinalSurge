@@ -14,8 +14,8 @@ import static com.codeborne.selenide.Selenide.*;
 @Log4j2
 public class RegistrationPage extends BasePage {
     public static final By CREATE_NEW_ACCOUNT_BUTTON = By.xpath("//button[text()='Create New Account']");
-    public static final By ERROR_MESSAGE = By.cssSelector("div.alert.alert-error");
-    public static final By ERROR_MESSAGE_EMPTY = By.xpath("//label[@class='error']");
+    public static final By ERROR_TEXT = By.cssSelector("div.alert.alert-error");
+    public static final By ERROR_TEXT_EMPTY = By.xpath("//label[@class='error']");
 
     @Step("Opening the registration page")
     public RegistrationPage openPage() {
@@ -29,6 +29,10 @@ public class RegistrationPage extends BasePage {
         log.info("Checking that the registration page is open");
         $(CREATE_NEW_ACCOUNT_BUTTON).shouldBe(Condition.visible);
         return this;
+    }
+
+    public String getErrorEmptyFieldText() {
+        return $(RegistrationPage.ERROR_TEXT_EMPTY).getText();
     }
 
     @Step("Fill out the registration form")
@@ -62,7 +66,7 @@ public class RegistrationPage extends BasePage {
     @Step("Сhecking that there is no error while creating an account")
     public void assertNoErrorMessageVisible() {
         log.info("Сhecking that there is no error while creating an account");
-        ElementsCollection errors = $$(ERROR_MESSAGE);
+        ElementsCollection errors = $$(ERROR_TEXT);
         if (!errors.isEmpty()) {
             errors.get(0).shouldNotBe(Condition.visible);
         }

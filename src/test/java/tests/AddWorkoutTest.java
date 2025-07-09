@@ -1,11 +1,11 @@
 package tests;
 
-import com.codeborne.selenide.Selenide;
 import jdk.jfr.Description;
 import org.testng.annotations.Test;
-import pages.AddWorkoutModal;
 
+import static com.codeborne.selenide.Selenide.sleep;
 import static org.testng.Assert.assertEquals;
+import static pages.AddWorkoutModal.ADD_NEW_WORKOUT_TEXT;
 
 public class AddWorkoutTest extends BaseTest {
     @Description("Verifies that the 'Add New Workout' opens correctly after selecting an activity and activity type")
@@ -22,8 +22,8 @@ public class AddWorkoutTest extends BaseTest {
                 .selectActivity("Run")
                 .selectActivityType("No Sub-Type");
         addWorkoutModal.isPageOpened();
-        Selenide.sleep(1000);
-        assertEquals(AddWorkoutModal.ADD_NEW_WORKOUT_MESSAGE, "Add New Workout",
+        sleep(1000);
+        assertEquals(ADD_NEW_WORKOUT_TEXT, "Add New Workout",
                 "Add Workout modal did not open!");
     }
 }

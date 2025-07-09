@@ -2,7 +2,6 @@ package pages;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
-import com.codeborne.selenide.Selenide;
 import dto.Workout;
 import io.qameta.allure.Step;
 import lombok.extern.log4j.Log4j2;
@@ -13,31 +12,30 @@ import wrappers.Input;
 import wrappers.TextArea;
 
 import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$;
+import static com.codeborne.selenide.Selenide.*;
 
 @Log4j2
 public class AddWorkoutModal extends BasePage {
 
     public static final By ADD_WORKOUT_BUTTON = By.xpath("//div/input[@id='saveButton']");
-    public static final String ADD_NEW_WORKOUT_MESSAGE = "Add New Workout";
+    public static final String ADD_NEW_WORKOUT_TEXT = "Add New Workout";
     public static final By UPDATE_BUTTON = By.xpath("//input[@id='saveButton']");
-    public static final By ERROR_MESSAGE = By.cssSelector("div.alert.alert-error");
-    public static final String UPDATE_WORKOUT_MESSAGE = "Update Workout";
+    public static final By ERROR_TEXT = By.cssSelector("div.alert.alert-error");
+    public static final String UPDATE_WORKOUT_TEXT = "Update Workout";
 
     @Step("Checking that the 'Add Workout' modal is open")
     public AddWorkoutModal isPageOpened() {
         log.info("Checking that the 'Add Workout' modal is open");
-        $(byText(ADD_NEW_WORKOUT_MESSAGE)).shouldBe(Condition.visible);
+        $(byText(ADD_NEW_WORKOUT_TEXT)).shouldBe(Condition.visible);
         return this;
     }
 
     public AddWorkoutModal isUpdateWorkoutModalOpened() {
-        $(byText(UPDATE_WORKOUT_MESSAGE)).shouldBe(Condition.visible);
+        $(byText(UPDATE_WORKOUT_TEXT)).shouldBe(Condition.visible);
         return this;
     }
 
-    @Step("Filling out the Add Workout form")
+    @Step("Filling out the 'Add Workout' form")
     public AddWorkoutModal createWorkoutModal(Workout workout) {
         log.info("Filling out the 'Add Workout' form to create a workout: {}", workout.getWorkoutName());
         new Input("Date").writeAddNewWorkout(workout.getDate());
@@ -45,7 +43,7 @@ public class AddWorkoutModal extends BasePage {
         new Input("Workout Name").writeAddNewWorkout(workout.getWorkoutName());
         new TextArea("Workout Description").writeAddNewWorkout(workout.getWorkoutDescription());
         new Checkbox("Show Planned Distance/Duration");
-        Selenide.sleep(1000);
+        sleep(1000);
         new Input("Distance").writeAddNewWorkoutBasic(workout.getDistance());
         new DropDown("Distance").selectForAddWorkoutModal(workout.getDistanceUnit());
         new Input("Duration").writeAddNewWorkoutBasic(workout.getDuration());
@@ -85,7 +83,7 @@ public class AddWorkoutModal extends BasePage {
     @Step("Сhecking that there is no error while creating a workout")
     public void checkNoErrorMessageVisible() {
         log.info("Сhecking that there is no error while creating a workout");
-        ElementsCollection errors = $$(ERROR_MESSAGE);
+        ElementsCollection errors = $$(ERROR_TEXT);
         if (!errors.isEmpty()) {
             errors.get(0).shouldNotBe(Condition.visible);
         }

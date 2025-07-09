@@ -3,10 +3,7 @@ package tests;
 import dto.Account;
 import jdk.jfr.Description;
 import org.testng.annotations.Test;
-import pages.RegistrationPage;
-import pages.UserProfilePage;
 
-import static com.codeborne.selenide.Selenide.$;
 import static org.testng.Assert.assertEquals;
 
 public class RegistrationTest extends BaseTest {
@@ -30,8 +27,8 @@ public class RegistrationTest extends BaseTest {
                 .clickCreateNewAccountButton();
         registrationPage.assertNoErrorMessageVisible();
 
-        assertEquals($(UserProfilePage.USER_PROFILE_LOCATOR).getText(), "Settings",
-                "Страница пользователя не открылась!");
+        assertEquals(userProfilePage.getSettingsText(), "Settings",
+                "User page did not open!");
     }
 
     @Description("Checking registration that the message" +
@@ -39,12 +36,12 @@ public class RegistrationTest extends BaseTest {
     @Test(testName = "Negative test of the registration page",
             description = "Checking registration that the message " +
                     "'This field is required.' appears when the 'Last Name' field is empty")
-    public void checkLoginWithEmptyPassword() {
+    public void checkCreateAccountWithoutLastName() {
         registrationPage.openPage()
                 .isPageOpened()
                 .createAccountWithoutLastName(account)
                 .clickCreateNewAccountButton();
-        assertEquals($(RegistrationPage.ERROR_MESSAGE_EMPTY).getText(), "This field is required.",
+        assertEquals(registrationPage.getErrorEmptyFieldText(), "This field is required.",
                 "No error message appeared!");
     }
 }
