@@ -30,12 +30,10 @@ public class TrainingCalendarPage extends BasePage {
     public TrainingCalendarPage checkWorkoutIsDisplayedInCalendar(String workoutName) {
         log.info("Checking that the {} workout is displayed in the calendar",
                 "'" + workoutName + "'");
-        String fullTitle = "Run: " + workoutName;
-        String xpath = String.format(WORKOUT_IN_CALENDAR, fullTitle);
+        String xpath = String.format(WORKOUT_IN_CALENDAR, workoutName);
         $x(xpath).shouldBe(Condition.visible);
         return this;
     }
-
 
     public String getWorkoutInCalendarText(String workoutName) {
         String expected = "Run: " + workoutName;
